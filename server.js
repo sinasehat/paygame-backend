@@ -6,9 +6,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const supabase = createClient("https://voxuninnzzbgpjljhlyz.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZveHVuaW5uenpiZ3BqbGpobHl6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4OTI0NDcsImV4cCI6MjA3MTQ2ODQ0N30.9BlMXYJWkrX0NesUhfmVgA3ZykBOTaaUtYgNJoQgl5c");
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
+// ✅ Health check route
+app.get("/", (req, res) => {
+  res.send("Backend is alive 🧿");
+});
+
+// ✅ Submission route
 app.post("/submit-answer", async (req, res) => {
+  console.log("Received answer submission:");
+  console.log(req.body);
+
   const { riddle_id, wallet_address, answer_text, submitted_at, hint_unlocked } = req.body;
 
   const { data, error } = await supabase
@@ -23,6 +32,8 @@ app.post("/submit-answer", async (req, res) => {
   res.json({ success: true, data });
 });
 
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+// ✅ Vercel uses process.env.PORT
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

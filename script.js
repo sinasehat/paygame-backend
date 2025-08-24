@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", 
 function () {
-  alert("Script.js is loaded!");
   const form = document.getElementById("answerForm");
 
   if (!form) {

@@ -6,12 +6,27 @@ const supabase = createClient(
 );
 
 module.exports = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST");
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const { riddle_id, wallet_address, answer_text, submitted_at, hint_unlocked } = req.body;
+    const body = req.body || await new Promise((resolve, reject) => {
+      let data = '';
+      req.on('data', chunk => data += chunk);
+      req.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch (err) {
+          reject(err);
+        }
+      });
+    });
+
+    const { riddle_id, wallet_address, answer_text, submitted_at, hint_unlocked } = body;
 
     const { data, error } = await supabase
       .from("answers")

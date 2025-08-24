@@ -21,7 +21,7 @@ function () {
       hint_unlocked: false
     };
 
-    fetch("https://paygame-backend.vercel.app/submit-answer", {
+    fetch("https://your-vercel-project.vercel.app/api/submit-answer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)

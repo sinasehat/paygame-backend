@@ -9,9 +9,6 @@ app.use(express.json());
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 // ✅ Health check route
-app.get("/", (req, res) => {
-  res.send("Backend is alive 🧿");
-});
 
 // ✅ Submission route
 app.post("/submit-answer", async (req, res) => {
